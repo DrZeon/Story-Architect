@@ -1,0 +1,10 @@
+{
+  "generator": {
+    "type": "storyarchitect:storyteller_dimension",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "minecraft:plains"
+    }
+  },
+  "type": "storyarchitect:storyteller_dimension"
+}

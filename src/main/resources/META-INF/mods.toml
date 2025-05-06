@@ -1,0 +1,40 @@
+modLoader = "kotlinforforge"
+loaderVersion = "[3,)"
+license = "All Rights Reserved"
+[[mods]]
+modId = "storyarchitect"
+version = "${file.jarVersion}"
+displayName = "StoryArchitect (HollowEngine)"
+displayURL = "https://github.com/HollowHorizon/HollowEngine/tree/stonecutter"
+logoFile = "StoryArchitect_logo_1X4.png"
+authors = "DrZeon,HollowHorizon"
+description = '''
+Для данной модификации был взят оригинатьный мод HollowEngine, созданный HollowHorizon.
+Я DrZeon не присваиваю HollowEngine себе.
+StoryArchitect это лишь модификация для использования в своих картах.
+'''
+
+[[dependencies.storyarchitect]]
+modId = "forge"
+mandatory = true
+versionRange = "[36,)"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.storyarchitect]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.19,1.20)"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.storyarchitect]]
+modId = "hc"
+mandatory = true
+versionRange = "[1.19.2-1.6.3,1.19.2-1.7.0)"
+ordering = "AFTER"
+side = "BOTH"
+[[dependencies.storyarchitect]]
+modId = "kotlinscript"
+mandatory = true
+versionRange = "[1.4,)"
+ordering = "AFTER"
+side = "BOTH"
