@@ -1,5 +1,6 @@
 package ru.hollowhorizon.hollowengine.client.gui.testGui
 
+import com.mojang.blaze3d.systems.RenderSystem
 import com.mojang.blaze3d.vertex.PoseStack
 import net.minecraft.client.gui.components.ImageButton
 import net.minecraft.client.gui.screens.Screen
@@ -12,13 +13,13 @@ class ScreenGui : Screen(Component.literal("Story Architect GUI")) {
     private var currentState = GuiState.MAIN
     private var transitionProgress = 0f
 
-    // Главная кнопка переключения (единственная глобальная текстура)
+
+    private val backgroundTexture = ResourceLocation("storyarchitect", "textures/gui/background.png")
     private val toggleButtonTexture = ResourceLocation("storyarchitect", "textures/gui/dialogues/choice_button.png")
 
     override fun init() {
         super.init()
 
-        // Главная кнопка переключения
         this.addRenderableWidget(
             ImageButton(
                 width / 2 - 8, 150,
@@ -42,7 +43,6 @@ class ScreenGui : Screen(Component.literal("Story Architect GUI")) {
     }
 
     override fun rebuildWidgets() {
-        // Сохраняем главную кнопку
         val mainButton = this.children().filterIsInstance<ImageButton>().firstOrNull()
         clearWidgets()
         mainButton?.let { addWidget(it) }
@@ -55,30 +55,30 @@ class ScreenGui : Screen(Component.literal("Story Architect GUI")) {
     }
 
     private fun initMainScreen() {
-
-        val characterIcon = ResourceLocation("storyarchitect", "textures/gui/long_button.png")
+        val characterIcon = ResourceLocation("storyarchitect", "textures/gui/dialogues/choice_button.png")
 
         this.addRenderableWidget(
-            ImageButton(
-                width / 2 , 100,
+            TexturedButton(
+                width / 2 - 100, 100,
                 200, 20,
                 0, 0, 20,
                 characterIcon,
-                200, 40
+                200, 40,
+                "Персонажи"
             ) { _ ->
                 currentState = GuiState.CHARACTERS
                 transitionProgress = 0f
                 rebuildWidgets()
             }
-
         )
         this.addRenderableWidget(
-            ImageButton(
-                width / 2 , 140,
+            TexturedButton(
+                width / 2 - 100, 140,
                 200, 20,
                 0, 0, 20,
                 characterIcon,
-                200, 40
+                200, 40,
+                "Настройки"
             ) { _ ->
                 currentState = GuiState.SETTINGS
                 transitionProgress = 0f
@@ -88,12 +88,11 @@ class ScreenGui : Screen(Component.literal("Story Architect GUI")) {
     }
 
     private fun initCharactersScreen() {
-
         val Texture = ResourceLocation("storyarchitect", "textures/gui/icons/recording.png")
 
         this.addRenderableWidget(
             ImageButton(
-                10, 10,  // Позиция в углу
+                10, 10,
                 16, 16,
                 0, 0, 16,
                 Texture,
@@ -103,16 +102,14 @@ class ScreenGui : Screen(Component.literal("Story Architect GUI")) {
                 rebuildWidgets()
             }
         )
-
     }
 
     private fun initSettingsScreen() {
-
         val Texture = ResourceLocation("storyarchitect", "textures/gui/icons/recording.png")
 
         this.addRenderableWidget(
             ImageButton(
-                10, 10,  // Позиция в углу
+                10, 10,
                 16, 16,
                 0, 0, 16,
                 Texture,
@@ -122,11 +119,14 @@ class ScreenGui : Screen(Component.literal("Story Architect GUI")) {
                 rebuildWidgets()
             }
         )
-
     }
 
     override fun render(poseStack: PoseStack, mouseX: Int, mouseY: Int, partialTicks: Float) {
+
         renderBackground(poseStack)
+        RenderSystem.setShaderTexture(0, backgroundTexture)
+        blit(poseStack, 0, 0, width, height, 0f, 0f, width, height, width, height)
+
         this.transitionProgress = Mth.lerp(partialTicks * 5f, transitionProgress, 1f)
 
         poseStack.pushPose()
