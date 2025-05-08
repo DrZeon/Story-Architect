@@ -3,7 +3,7 @@ loaderVersion = "[3,)"
 license = "All Rights Reserved"
 [[mods]]
 modId = "storyarchitect"
-version = "${file.jarVersion}"
+version = "0.0.5" #${file.jarVersion}
 displayName = "StoryArchitect (HollowEngine)"
 displayURL = "https://github.com/HollowHorizon/HollowEngine/tree/stonecutter"
 logoFile = "StoryArchitect_logo_1X4.png"

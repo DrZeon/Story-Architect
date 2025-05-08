@@ -36,18 +36,15 @@ import net.minecraftforge.client.event.*
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay
 import net.minecraftforge.event.entity.player.ItemTooltipEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
-import net.minecraftforge.fml.common.Mod
-import net.minecraftforge.api.distmarker.Dist
 import org.lwjgl.glfw.GLFW
 import ru.hollowhorizon.hc.client.models.gltf.manager.AnimatedEntityCapability
 import ru.hollowhorizon.hc.client.screens.ImGuiScreen
 import ru.hollowhorizon.hc.client.utils.get
 import ru.hollowhorizon.hc.client.utils.mcTranslate
 import ru.hollowhorizon.hc.client.utils.open
-import ru.hollowhorizon.hollowengine.storyarchitect.Companion.MODID
 import ru.hollowhorizon.hollowengine.client.gui.height
 import ru.hollowhorizon.hollowengine.client.gui.scripting.CodeEditorGui
-import ru.hollowhorizon.hollowengine.client.gui.testGui.KeyBindings
+import ru.hollowhorizon.hollowengine.client.gui.testGui.MenuScreen
 import ru.hollowhorizon.hollowengine.client.gui.width
 import ru.hollowhorizon.hollowengine.client.render.PlayerRenderer
 import ru.hollowhorizon.hollowengine.client.screen.ProgressManagerScreen
@@ -60,10 +57,12 @@ import ru.hollowhorizon.hollowengine.common.network.MouseButton
 import ru.hollowhorizon.hollowengine.common.network.MouseClickedPacket
 import ru.hollowhorizon.hollowengine.common.util.Keybind
 import ru.hollowhorizon.hollowengine.cutscenes.replay.PauseRecordingPacket
+import ru.hollowhorizon.hollowengine.storyarchitect.Companion.MODID
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
 
 object ClientEvents {
     const val HE_CATEGORY = "key.categories.hollowengine.keys"
+    val OPEN_GUI_KEY = KeyMapping(keyBindName("open_gui"), GLFW.GLFW_KEY_G,HE_CATEGORY)
     val OPEN_EVENT_LIST = KeyMapping(keyBindName("event_list"), GLFW.GLFW_KEY_GRAVE_ACCENT, HE_CATEGORY)
     val TOGGLE_RECORDING = KeyMapping(keyBindName("toggle_recording"), GLFW.GLFW_KEY_V, HE_CATEGORY)
     val OPEN_IDE = KeyMapping(keyBindName("open_ide"), GLFW.GLFW_KEY_H, HE_CATEGORY)
@@ -190,14 +189,14 @@ object ClientEvents {
             event.register(OPEN_EVENT_LIST)
             event.register(TOGGLE_RECORDING)
             event.register(OPEN_IDE)
+            event.register(OPEN_GUI_KEY)
         }
     }
 
-    @Mod.EventBusSubscriber(modid = "$MODID", bus = Mod.EventBusSubscriber.Bus.MOD, value = [Dist.CLIENT])
-    object ModClientSetup {
-        @SubscribeEvent
-        fun registerKeyBindings(event: RegisterKeyMappingsEvent) {
-            event.register(KeyBindings.OPEN_GUI_KEY)
+    @SubscribeEvent
+    fun onKeyInput(event: InputEvent.Key) {
+        if (OPEN_GUI_KEY.consumeClick()) {
+            Minecraft.getInstance().setScreen(MenuScreen())
         }
     }
 }
