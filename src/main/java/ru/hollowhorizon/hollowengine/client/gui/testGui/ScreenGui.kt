@@ -52,7 +52,7 @@ abstract class StoryScreen(title: Component) : Screen(title) {
 
 class MenuScreen : StoryScreen(Component.literal("Story Architect GUI")) {
     override val backgroundTexture = ResourceLocation(storyarchitect.MODID, "textures/gui/background.png")
-    override val backgroundScale = 0.8f // 80% заполнения
+    override val backgroundScale = 0.8f
 
     private val buttonTexture = ResourceLocation(storyarchitect.MODID, "textures/gui/dialogues/choice_button.png")
 
@@ -75,7 +75,20 @@ class MenuScreen : StoryScreen(Component.literal("Story Architect GUI")) {
 
         this.addRenderableWidget(
             TexturedButton(
-                width / 2 - 100, bgArea.y + 90,
+                width / 2 - 100, bgArea.y + 75,
+                200, 20,
+                0, 0, 20,
+                buttonTexture,
+                200, 40,
+                "Игроки"
+            ) { _ ->
+                minecraft?.setScreen(PlayersScreen())
+            }
+        )
+
+        this.addRenderableWidget(
+            TexturedButton(
+                width / 2 - 100, bgArea.y + 100,
                 200, 20,
                 0, 0, 20,
                 buttonTexture,
@@ -150,5 +163,33 @@ class SettingsScreen : StoryScreen(Component.literal("Настройки")) {
     override fun renderScreenContent(poseStack: PoseStack, mouseX: Int, mouseY: Int, partialTicks: Float) {
         val bgArea = getBackgroundArea()
         drawCenteredString(poseStack, font, "Настройки", width / 2, bgArea.y + 30, 0xFFAA00)
+    }
+}
+class PlayersScreen : StoryScreen(Component.literal("Игроки")) {
+    override val backgroundTexture = ResourceLocation(storyarchitect.MODID, "textures/gui/background.png")
+    override val backgroundScale = 0.8f // 80% заполнения
+
+    private val backButtonTexture = ResourceLocation(storyarchitect.MODID, "textures/gui/icons/recording.png")
+
+    override fun init() {
+        super.init()
+        val bgArea = getBackgroundArea()
+
+        this.addRenderableWidget(
+            ImageButton(
+                bgArea.x + 20, bgArea.y + 20,
+                16, 16,
+                0, 0, 16,
+                backButtonTexture,
+                16, 16
+            ) { _ ->
+                minecraft?.setScreen(MenuScreen())
+            }
+        )
+    }
+
+    override fun renderScreenContent(poseStack: PoseStack, mouseX: Int, mouseY: Int, partialTicks: Float) {
+        val bgArea = getBackgroundArea()
+        drawCenteredString(poseStack, font, "Персонажи", width / 2, bgArea.y + 30, 0x55FF55)
     }
 }

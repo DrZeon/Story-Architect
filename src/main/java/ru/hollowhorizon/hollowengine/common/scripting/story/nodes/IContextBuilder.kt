@@ -35,18 +35,21 @@ import net.minecraft.server.level.ServerPlayer
 import net.minecraft.util.Mth
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.EntityType
+import net.minecraft.world.entity.LightningBolt
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.trading.MerchantOffer
 import net.minecraft.world.level.ClipContext
+import net.minecraft.world.level.Explosion
 import net.minecraft.world.phys.AABB
 import net.minecraft.world.phys.Vec2
 import net.minecraft.world.phys.Vec3
-import net.minecraftforge.event.entity.player.PlayerEvent
-import net.minecraftforge.event.entity.player.PlayerInteractEvent
 import net.minecraftforge.event.TickEvent.PlayerTickEvent
 import net.minecraftforge.event.TickEvent.ServerTickEvent
+import net.minecraftforge.event.entity.player.PlayerEvent
+import net.minecraftforge.event.entity.player.PlayerInteractEvent
 import net.minecraftforge.network.PacketDistributor
 import net.minecraftforge.registries.ForgeRegistries
 import ru.hollowhorizon.hc.client.models.gltf.animations.PlayMode
@@ -826,4 +829,68 @@ abstract class IContextBuilder {
         }
     }
 
+    fun MessageChat(message: String) = waitForgeEvent<PlayerTickEvent> { event ->
+        event.player.sendSystemMessage(Component.literal(message))
+        true
+    }
+
+    fun setHealth(health: Float) = waitForgeEvent<PlayerTickEvent> { event ->
+        event.player.health = health.coerceIn(1f, event.player.maxHealth)
+        true
+    }
+
+    fun healOverTime(amount: Float, durationTicks: Int) {
+        val totalTicks = durationTicks.coerceAtLeast(1)
+        val healPerTick = amount / totalTicks
+        var ticksRemaining = totalTicks
+
+        waitForgeEvent<PlayerTickEvent> { event ->
+            if (ticksRemaining-- > 0) {
+                event.player.health = (event.player.health + healPerTick)
+                    .coerceAtMost(event.player.maxHealth)
+                false
+            } else true
+        }
+    }
+
+    fun regenerateHealth(speed: Float = 1f) = waitForgeEvent<PlayerTickEvent> { event ->
+        with(event.player) {
+            if (health < maxHealth) {
+                health = (health + speed).coerceAtMost(maxHealth)
+                false
+            } else true
+        }
+    }
+
+    fun MessageSequence(vararg messages: String, intervalTicks: Int = 40) {
+        var index = 0
+        var counter = 0
+        waitForgeEvent<PlayerTickEvent> { event ->
+            if (counter++ % intervalTicks == 0 && index < messages.size) {
+                event.player.sendSystemMessage(Component.literal(messages[index++]))
+            }
+            index >= messages.size
+        }
+    }
+
+    fun createTNT(x: Double, y: Double, z: Double, power: Float) = waitForgeEvent<ServerTickEvent> { event ->
+        event.server.overworld().explode(
+            null, x, y, z, power,  true, Explosion.BlockInteraction.DESTROY
+        )
+        true
+    }
+
+    fun setWeather(rain: Boolean, thunder: Boolean) = waitForgeEvent<ServerTickEvent> { event ->
+        event.server.overworld().setWeatherParameters(0, if (rain) 6000 else 0, rain, thunder)
+        true
+    }
+
+    fun summonLightning(x: Double, y: Double, z: Double) = waitForgeEvent<ServerTickEvent> { event ->
+        event.server.overworld().addFreshEntity(
+            LightningBolt(EntityType.LIGHTNING_BOLT, event.server.overworld()).apply {
+                moveTo(x, y, z)
+            }
+        )
+        true
+    }
 }
