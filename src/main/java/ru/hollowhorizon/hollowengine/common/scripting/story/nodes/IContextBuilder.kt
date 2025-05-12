@@ -818,7 +818,9 @@ abstract class IContextBuilder {
     fun BlockInteract(block: String, vararg positions: Vec3) {
         waitForgeEvent<PlayerInteractEvent.RightClickBlock> { event ->
             val pos = event.pos
-            positions.any { pos == BlockPos(it) } && event.level.getBlockState(pos).block == ForgeRegistries.BLOCKS.getValue(block.rl)
+            positions.any { pos == BlockPos(it) } && event.level.getBlockState(pos).block == ForgeRegistries.BLOCKS.getValue(
+                block.rl
+            )
         }
     }
 
@@ -873,12 +875,13 @@ abstract class IContextBuilder {
         }
     }
 
-    fun createTNT(x: Double, y: Double, z: Double, power: Float) = waitForgeEvent<ServerTickEvent> { event ->
-        event.server.overworld().explode(
-            null, x, y, z, power,  true, Explosion.BlockInteraction.DESTROY
-        )
-        true
-    }
+    fun createTNT(x: Double, y: Double, z: Double, power: Float, causesFire: Boolean = false) =
+        waitForgeEvent<ServerTickEvent> { event ->
+            event.server.overworld().explode(
+                null, x, y, z, power, causesFire, Explosion.BlockInteraction.DESTROY
+            )
+            true
+        }
 
     fun setWeather(rain: Boolean, thunder: Boolean) = waitForgeEvent<ServerTickEvent> { event ->
         event.server.overworld().setWeatherParameters(0, if (rain) 6000 else 0, rain, thunder)
@@ -893,4 +896,5 @@ abstract class IContextBuilder {
         )
         true
     }
+
 }
