@@ -26,20 +26,17 @@ package ru.hollowhorizon.hollowengine.client.gui
 
 import com.mojang.blaze3d.vertex.PoseStack
 import imgui.ImGui
-import imgui.extension.imnodes.ImNodes
 import net.minecraft.client.Minecraft
 import ru.hollowhorizon.hc.client.imgui.ImGuiMethods.centredWindow
 import ru.hollowhorizon.hc.client.imgui.ImguiHandler
 import ru.hollowhorizon.hc.client.screens.HollowScreen
-import ru.hollowhorizon.hc.client.utils.get
 import ru.hollowhorizon.hc.client.utils.open
 import ru.hollowhorizon.hc.client.utils.rl
 import ru.hollowhorizon.hc.client.utils.toTexture
-import ru.hollowhorizon.hollowengine.storyarchitect.Companion.MODID
 import ru.hollowhorizon.hollowengine.client.gui.npcs.ScriptNodeEditor
 import ru.hollowhorizon.hollowengine.client.translate
 import ru.hollowhorizon.hollowengine.common.entities.NPCEntity
-import ru.hollowhorizon.hollowengine.common.npcs.NPCCapability
+import ru.hollowhorizon.hollowengine.storyarchitect.Companion.MODID
 
 class NPCToolGui(val npc: NPCEntity) : HollowScreen() {
     override fun render(pPoseStack: PoseStack, pMouseX: Int, pMouseY: Int, pPartialTick: Float) {
@@ -50,12 +47,12 @@ class NPCToolGui(val npc: NPCEntity) : HollowScreen() {
                 if (imageButton("wrench", "npctool.$MODID.npc.setting".translate)) {
                     NPCCreatorGui(npc, npc.id).open()
                 }
-                //sameLine()
-                //if (imageButton("nodes", "Настройка поведения персонажа")) {
-                    //ScriptNodeEditor(npc).open()
-                //}
-                //sameLine()
-                //imageButton("pose", "Редактор поз")
+                sameLine()
+                if (imageButton("nodes", "Настройка поведения персонажа")) {
+                    ScriptNodeEditor(npc).open()
+                }
+                sameLine()
+                imageButton("pose", "Редактор поз")
             }
         }
     }
