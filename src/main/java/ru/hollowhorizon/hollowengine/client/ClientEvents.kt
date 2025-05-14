@@ -43,8 +43,8 @@ import ru.hollowhorizon.hc.client.utils.get
 import ru.hollowhorizon.hc.client.utils.mcTranslate
 import ru.hollowhorizon.hc.client.utils.open
 import ru.hollowhorizon.hollowengine.client.gui.height
+import ru.hollowhorizon.hollowengine.client.gui.screengui.MenuScreen
 import ru.hollowhorizon.hollowengine.client.gui.scripting.CodeEditorGui
-import ru.hollowhorizon.hollowengine.client.gui.testGui.MenuScreen
 import ru.hollowhorizon.hollowengine.client.gui.width
 import ru.hollowhorizon.hollowengine.client.render.PlayerRenderer
 import ru.hollowhorizon.hollowengine.client.screen.ProgressManagerScreen
@@ -199,4 +199,6 @@ object ClientEvents {
             Minecraft.getInstance().setScreen(MenuScreen())
         }
     }
+
 }
+
