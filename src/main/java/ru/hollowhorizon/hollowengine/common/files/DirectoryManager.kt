@@ -25,11 +25,10 @@
 package ru.hollowhorizon.hollowengine.common.files
 
 import net.minecraftforge.fml.loading.FMLPaths
-import ru.hollowhorizon.kotlinscript.common.scripting.ScriptingCompiler
-import ru.hollowhorizon.hollowengine.common.files.DirectoryManager.toReadablePath
 import ru.hollowhorizon.hollowengine.common.scripting.content.ContentScript
 import ru.hollowhorizon.hollowengine.common.scripting.mod.ModScript
 import ru.hollowhorizon.hollowengine.common.scripting.story.StoryScript
+import ru.hollowhorizon.kotlinscript.common.scripting.ScriptingCompiler
 import java.io.File
 
 object DirectoryManager {

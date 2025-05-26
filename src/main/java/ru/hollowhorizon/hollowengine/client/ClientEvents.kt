@@ -43,6 +43,7 @@ import ru.hollowhorizon.hc.client.utils.get
 import ru.hollowhorizon.hc.client.utils.mcTranslate
 import ru.hollowhorizon.hc.client.utils.open
 import ru.hollowhorizon.hollowengine.client.gui.height
+import ru.hollowhorizon.hollowengine.client.gui.screengui.LogScreen
 import ru.hollowhorizon.hollowengine.client.gui.screengui.MenuScreen
 import ru.hollowhorizon.hollowengine.client.gui.scripting.CodeEditorGui
 import ru.hollowhorizon.hollowengine.client.gui.width
@@ -196,7 +197,7 @@ object ClientEvents {
     @SubscribeEvent
     fun onKeyInput(event: InputEvent.Key) {
         if (OPEN_GUI_KEY.consumeClick()) {
-            Minecraft.getInstance().setScreen(MenuScreen())
+            Minecraft.getInstance().setScreen(LogScreen(MenuScreen()))
         }
     }
 
