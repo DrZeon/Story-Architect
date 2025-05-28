@@ -26,6 +26,7 @@
 
 package ru.hollowhorizon.hollowengine.common.scripting.story.nodes
 
+import net.minecraft.client.Minecraft
 import net.minecraft.core.BlockPos
 import net.minecraft.nbt.ListTag
 import net.minecraft.network.chat.Component
@@ -64,6 +65,7 @@ import ru.hollowhorizon.hc.client.utils.nbt.loadAsNBT
 import ru.hollowhorizon.hc.common.network.packets.StartAnimationPacket
 import ru.hollowhorizon.hc.common.network.packets.StopAnimationPacket
 import ru.hollowhorizon.hc.common.ui.Widget
+import ru.hollowhorizon.hollowengine.client.gui.txt.TxtGui
 import ru.hollowhorizon.hollowengine.common.capabilities.AimMark
 import ru.hollowhorizon.hollowengine.common.capabilities.PlayerStoryCapability
 import ru.hollowhorizon.hollowengine.common.capabilities.StoriesCapability
@@ -897,4 +899,15 @@ abstract class IContextBuilder {
         true
     }
 
+    fun TxtScreen(title: String, path: String) = +SimpleNode {
+        Minecraft.getInstance().execute {
+            Minecraft.getInstance().setScreen(TxtGui(title, path))
+        }
+    }
+
+    fun closeTxt() = +SimpleNode {
+        stateMachine.server.playerList.players.forEach {
+            CloseGuiPacket().send(it)
+        }
+    }
 }

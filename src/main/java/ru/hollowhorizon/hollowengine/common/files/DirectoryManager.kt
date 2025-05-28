@@ -77,4 +77,5 @@ object DirectoryManager {
     fun String.fromReadablePath(): File {
         return FMLPaths.GAMEDIR.get().resolve("storyarchitect").resolve(this).toFile()
     }
+
 }

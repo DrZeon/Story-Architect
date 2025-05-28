@@ -31,6 +31,6 @@ class PlayersScreen : StoryScreen(Component.literal("Игроки")) {
 
     override fun renderScreenContent(poseStack: PoseStack, mouseX: Int, mouseY: Int, partialTicks: Float) {
         val bgArea = getBackgroundArea()
-        drawCenteredString(poseStack, font, "Игроки", width / 2, bgArea.y + 30, 0x55FF55)
+        drawCenteredString(poseStack, font, "Игроки", width / 2, bgArea.y + 30, 0xFF5E5E)
     }
 }
